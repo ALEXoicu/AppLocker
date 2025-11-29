@@ -1,6 +1,7 @@
-#!/usr/bin/env python3
 import os
 import sys
+
+
 import tempfile
 import subprocess
 import tkinter as tk
@@ -11,6 +12,10 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.backends import default_backend
 import base64
 from pathlib import Path
+
+
+
+
 
 
 def derive_key(password: str, salt: bytes) -> bytes:
@@ -26,11 +31,16 @@ def derive_key(password: str, salt: bytes) -> bytes:
 
 
 def main():
+    if getattr(sys, 'frozen', False):
+        folder = os.path.dirname(sys.executable)
+    else:
+        folder = os.path.dirname(os.path.abspath(__file__))
     root = tk.Tk()
     root.withdraw()
 
     launcher_path = Path(sys.argv[0])
     locked_path = launcher_path.with_suffix(launcher_path.suffix + ".locked")
+    
 
     if not locked_path.exists():
         messagebox.showerror("Error",
@@ -60,7 +70,7 @@ def main():
             messagebox.showerror("Error", "Incorrect password!")
             return
 
-        temp_exe_path = Path(tempfile.gettempdir()) / (launcher_path.stem + "_run.exe")
+        temp_exe_path = Path(folder) / (launcher_path.stem + "_run.exe")
         temp_exe_path.write_bytes(decrypted)
 
         proc = subprocess.Popen([str(temp_exe_path)])
@@ -73,6 +83,8 @@ def main():
 
     except Exception as e:
         messagebox.showerror("Error", f"Unable to launch program:\n{e}")
+    
+
 
 
 if __name__ == "__main__":
