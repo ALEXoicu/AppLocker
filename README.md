@@ -13,6 +13,5 @@ Usage:
   - Press "Unlock File"
   - Select your .exe.locked file from the file picker
 
-!!WARNINGS!!:
-- Do not delete the "launcher_template.exe" file and make sure its in the same folder with "locker.exe"!
+!!WARNING!!:
 - Deleting the .exe.locked file will cause you to lose your .exe file!
